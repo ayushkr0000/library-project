@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Book Selection</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		.container {
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		h1 {
+			text-align: center;
+			font-size: 50px;
+			color: #333;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+			letter-spacing: 2px;
+			margin-top: 30px;
+		}
+
+		.book-list {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			margin-top: 30px;
+		}
+
+		.book {
+			width: 300px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 10px;
+			margin-bottom: 20px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			transition: transform 0.3s, box-shadow 0.3s;
+		}
+
+		.book:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+		}
+
+		.book img {
+			max-width: 100%;
+			height: auto;
+			margin-bottom: 10px;
+			border-radius: 5px;
+		}
+
+		.book-title {
+			font-weight: bold;
+			font-size: 20px;
+			margin-bottom: 5px;
+			color: #333;
+		}
+
+		.book-author {
+			font-style: italic;
+			margin-bottom: 10px;
+			color: #777;
+		}
+
+		.book-availability {
+			margin-bottom: 10px;
+			color: #555;
+		}
+
+		nav {
+			float: right;
+			padding: 20px;
+		}
+
+		nav li {
+			display: inline-block;
+			line-height: 80px;
+			margin-right: 10px;
+		}
+
+		nav li a {
+			color: #333;
+			text-decoration: none;
+			font-size: 18px;
+			transition: color 0.3s;
+		}
+
+		nav li a:hover {
+			color: #555;
+		}
+
+		.filter-form {
+			margin-bottom: 20px;
+		}
+
+		.filter-form label {
+			font-weight: bold;
+			margin-right: 10px;
+		}
+
+		.filter-form select {
+			padding: 5px;
+			font-size: 16px;
+		}
+	</style>
+	<style>
+		/* Add CSS styles to make the book list attractive */
+		.book-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 20px;
+			justify-content: center;
+		}
+
+		.book {
+			border: 1px solid #ccc;
+			padding: 20px;
+			text-align: center;
+			width: 250px;
+		}
+
+		.book img {
+			max-width: 100%;
+			height: auto;
+			margin-bottom: 10px;
+		}
+
+		.book .book-title {
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+
+		.book .book-author {
+			margin-bottom: 10px;
+		}
+
+		.book .book-availability {
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+<body>
+	<header style="height: 90px;">
+		<div class="logo">
+			<h1 style="color: white; font-size: 25px; word-spacing: 10px; line-height: 80px; margin-top: 20px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h1>
+		</div>
+		<nav>
+			<ul>
+				<li><a href="index.html">HOME</a></li>
+				<li><a href="books.html">BOOKS</a></li>
+				<li><a href="student_login.html">STUDENT-LOGIN</a></li>
+				<li><a href="registration.html">REGISTRATION</a></li>
+				<li><a href="">FEEDBACK</a></li>
+			</ul>
+		</nav>
+	</header>
+	<div class="container">
+		<h1>Book Selection</h1>
+		<div class="filter-form">
+			<label for="filter-select">Filter by:</label>
+			<select id="filter-select" onchange="filterBooks()">
+				<option value="all">All</option>
+				<option value="title">Title</option>
+				<option value="author">Author</option>
+				<option value="subject">Subject</option>
+				<option value="publish-date">Publish Date</option>
+			</select>
+			<label for="sort-select">Sort by:</label>
+			<select id="sort-select" onchange="sortBooks()">
+				<option value="default">Default</option>
+				<option value="title">Title</option>
+				<option value="author">Author</option>
+				<option value="subject">Subject</option>
+				<option value="publish-date">Publish Date</option>
+			</select>
+		</div>
+		<div class="book-list" id="book-list">
+			<!-- Books will be dynamically added here -->
+		</div>
+	</div>
+	<script>
+		// Get the book list element
+		const bookList = document.getElementById('book-list');
+
+		// Get the filter and sort select elements
+		const filterSelect = document.getElementById('filter-select');
+		const sortSelect = document.getElementById('sort-select');
+
+		// Define the book data array
+		const books = [
+			{
+				title: "BHAGAVAD GEETA",
+				author: "महर्षि कृष्णद्वैपायन वेदव्यास",
+				subject: "Hindu Scriptures",
+				publishDate: "01-01-2000",
+				availability: true,
+				copies: 5,
+				image: "images/2.jpg"
+			},
+			{
+				title: "RAMAYANA",
+				author: "वाल्मीकि",
+				subject: "Hindu Scriptures",
+				publishDate: "01-01-2000",
+				availability: true,
+				copies: 3,
+				image: "images/12.jpg"
+			},
+			{
+				title: "RAM CHARITRA MANAS",
+				author: "गोस्वामी तुलसीदास",
+				subject: "Hindu Scriptures",
+				publishDate: "01-01-2000",
+				availability: false,
+				copies: 0,
+				image: "images/13.jpg"
+			}
+			// Add more book objects as needed
+		];
+
+		// Display the initial book list
+		displayBooks(books);
+
+		// Function to display books in the book list
+		function displayBooks(books) {
+			bookList.innerHTML = '';
+			books.forEach((book) => {
+				const bookItem = document.createElement('div');
+				bookItem.classList.add('book');
+
+				const bookImage = document.createElement('img');
+				bookImage.src = book.image;
+				bookImage.alt = book.title;
+				bookItem.appendChild(bookImage);
+
+				const bookTitle = document.createElement('h3');
+				bookTitle.classList.add('book-title');
+				bookTitle.textContent = book.title;
+				bookItem.appendChild(bookTitle);
+
+				const bookAuthor = document.createElement('p');
+				bookAuthor.classList.add('book-author');
+				bookAuthor.textContent = book.author;
+				bookItem.appendChild(bookAuthor);
+
+				const bookAvailability = document.createElement('p');
+				bookAvailability.classList.add('book-availability');
+				bookAvailability.textContent = `Availability: ${book.availability ? 'Yes' : 'No'}`;
+				bookItem.appendChild(bookAvailability);
+
+				const bookCopies = document.createElement('p');
+				bookCopies.classList.add('book-availability');
+				bookCopies.textContent = `Number of Copies: ${book.copies}`;
+				bookItem.appendChild(bookCopies);
+
+				bookList.appendChild(bookItem);
+			});
+		}
+
+		// Rest of your JavaScript code
+	</script>
+</body>
+</html>
